@@ -1,6 +1,6 @@
-# telegram-bot-pptx-to-pdf
-Бот для дня открытых дверей. Ему нужно написать имя, в ответ придёт сертификат об участии
+# Certificater
+Prog to create certificates
 
-Работает только на Windows
+Works only on Windows
 
 pip install -r requirements.txt
