@@ -1,8 +1,0 @@
-DateTime
-uuid
-pysqlite3
-pymorphy2
-pytrovich
-comtypes
-python-pptx
-openpyxl
