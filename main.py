@@ -8,7 +8,7 @@ today_date = "{:02d}".format(datetime.date.today().day)
 today_date += "-" + "{:02d}".format(datetime.date.today().month)
 today_date += "-" + str(datetime.date.today().year)
 
-names = all_names()[1:]
+names = all_names(input())[1:]
 
 for name in names:
     name[3]=name[3].split('.')[0]
