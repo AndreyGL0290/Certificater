@@ -5,6 +5,9 @@ import os
 
 def PPTX_GENERATOR(name, UID, today_date):
     prs = Presentation(name[3]+'.pptx')
+    today__date=today_date.split('-')
+    today__date[1]=['января', 'февраля', 'сарта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'][int(today__date[1])-1]
+    today__date=' '.join(today__date)+' г.'
     for shape in prs.slides[0].shapes:  # перебираем объекты на слайде
         if (shape.has_text_frame):
             if(shape.text_frame.text == 'Name'):  # ищим поле где написано Name
@@ -19,6 +22,9 @@ def PPTX_GENERATOR(name, UID, today_date):
             if(shape.text_frame.text == 'DocumentID'):  # ищим поле где написано DocumentID
                 # # зписываем туда уникальный идентификатор сертификата
                 shape.text_frame.paragraphs[0].runs[0].text = UID
+            if(shape.text_frame.text == 'Date'):  # ищим поле где написано DocumentID
+                # # зписываем туда уникальный идентификатор сертификата
+                shape.text_frame.paragraphs[0].runs[0].text = today__date
     # указываем создателем Кванториум
     prs.core_properties.author = "Кванториум Новосибирск"
     # заголовок файла (ВАЖНО ДЛЯ PDF он в заголовке пишется)
