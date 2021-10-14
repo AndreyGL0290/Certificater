@@ -1,6 +1,3 @@
-# telegram-bot-pptx-to-pdf
+# Certificater
 Prog to create certificates
-
-Works only on Windows
-
-pip install -r requirements.txt
+Works only on Windows and not needeed in installing
