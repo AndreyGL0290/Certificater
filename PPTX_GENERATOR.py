@@ -3,40 +3,31 @@ from pptx import Presentation
 import os
 
 
-def PPTX_GENERATOR(name, UID, today_date):
-    prs = Presentation(name[3]+'.pptx')
-    today__date=today_date.split('-')
-    today__date[1]=['января', 'февраля', 'сарта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'][int(today__date[1])-1]
-    today__date=' '.join(today__date)+' г.'
+def PPTX_GENERATOR(data):
+    prs = Presentation(data['template'] + '.pptx')
     for shape in prs.slides[0].shapes:  # перебираем объекты на слайде
         if (shape.has_text_frame):
-            if(shape.text_frame.text == 'Name'):  # ищим поле где написано Name
-                shape.text_frame.paragraphs[0].runs[0].text = name_change(
-                    name[0])  # зписываем туда ФИО
-            if(shape.text_frame.text == 'Type1'):  # ищим поле где написано Type1
-                # зписываем туда тип
-                shape.text_frame.paragraphs[0].runs[0].text = name[1]
-            if(shape.text_frame.text == 'Type2'):  # ищим поле где написано Type2
-                # зписываем туда степень
-                shape.text_frame.paragraphs[0].runs[0].text = name[2]
-            if(shape.text_frame.text == 'DocumentID'):  # ищим поле где написано DocumentID
-                # # зписываем туда уникальный идентификатор сертификата
-                shape.text_frame.paragraphs[0].runs[0].text = UID
-            if(shape.text_frame.text == 'Date'):  # ищим поле где написано DocumentID
-                # # зписываем туда уникальный идентификатор сертификата
-                shape.text_frame.paragraphs[0].runs[0].text = today__date
-    # указываем создателем Кванториум
-    prs.core_properties.author = "Кванториум Новосибирск"
+            for i in data.items():
+                try:
+                    if i[0] in shape.text_frame.text.lower():
+                        shape.text_frame.paragraphs[0].runs[0].text = name_change(
+                            i[1])
+                except:
+                    if i[0] in shape.text_frame.text.lower():
+                        shape.text_frame.paragraphs[0].runs[0].text = i[1]
+
+    # указываем создателя
+    prs.core_properties.author = ""
     # заголовок файла (ВАЖНО ДЛЯ PDF он в заголовке пишется)
-    prs.core_properties.title = "Сертификат"
+    prs.core_properties.title = ""
 
     #  для хранения сертификатов создаём две папки, в которых тоже будут папки
     #  внитри GENERATED_PPTX и GENERATED_PDF будут папки-даты
-    os.makedirs('GENERATED_PPTX/{}'.format(today_date),
+    os.makedirs('GENERATED_PPTX/{}'.format(data['date']),
                 exist_ok=True)  # создаём папку
-    os.makedirs('GENERATED_PDF/{}'.format(today_date),
+    os.makedirs('GENERATED_PDF/{}'.format(data['date']),
                 exist_ok=True)  # создаём папку
-    prs.save('GENERATED_PPTX/' + today_date + '/' +
-             name[1] + '_' + name[0] + '_' + UID + '.pptx')
+    prs.save('GENERATED_PPTX/' + data['date'] + '/' +
+             data['file_name'] + '_' + data['id'] + '.pptx')
     # имя файла для перевода его в PDF
-    return(name[1] + '_' + name[0] + '_' + UID)
+    return(data['file_name'] + '_' + data['id'])

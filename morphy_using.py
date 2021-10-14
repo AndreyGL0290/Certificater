@@ -3,40 +3,33 @@ from pytrovich.enums import NamePart, Gender, Case
 from pytrovich.maker import PetrovichDeclinationMaker
 import copy
 
+
 def name_change(name):
 
-    morph = pmr.MorphAnalyzer(lang='ru-old') # определение пола
+    morph = pmr.MorphAnalyzer(lang='ru')  # определение пола
     maker = PetrovichDeclinationMaker()  # склонение ФИО
     full_name = name.split()  # разбиение ФИО на составляющие
 
-    first_name = full_name[1]  # возможное имя
-    sur_name = full_name[0]  # возможное фамилия
-    patronymic = full_name[2]  # возможное отчество
-
     gender = ""
-    if first_name:
-        if 'masc' in morph.parse(first_name)[0].tag:
+    if full_name[1]:
+        if 'masc' in morph.parse(full_name[1])[0].tag:
             gender = Gender.MALE
-        elif 'femn' in morph.parse(first_name)[0].tag:
+        elif 'femn' in morph.parse(full_name[1])[0].tag:
             gender = Gender.FEMALE
 
-    cased_first_name = maker.make(NamePart.FIRSTNAME,gender, Case.DATIVE, first_name)
-        
-    
-    cased_sur_name = maker.make(NamePart.LASTNAME, gender, Case.DATIVE, sur_name)
+    cased_first_name = maker.make(
+        NamePart.FIRSTNAME, gender, Case.DATIVE, full_name[1])
+    cased_sur_name = maker.make(
+        NamePart.LASTNAME, gender, Case.DATIVE, full_name[0])
+    cased_patronymic = maker.make(
+        NamePart.MIDDLENAME, gender, Case.DATIVE, full_name[2])
 
-
-    cased_patronymic = maker.make(NamePart.MIDDLENAME, gender, Case.DATIVE, patronymic)
-
-    
     final_name = cased_sur_name + ' ' + cased_first_name + ' ' + cased_patronymic
     final_name = final_name.strip()
+    print(name, ' => ', final_name, '\n')
 
     return final_name
 
-
-    
-    
 
 '''
     f_name = ''
