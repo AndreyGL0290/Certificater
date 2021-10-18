@@ -9,4 +9,4 @@ for loc in data:
     command = "python PPTX_to_PDF.py " + file_name + " " + loc['date']
     main(file_name, loc['date'])
     file = file_name.replace("©", " ")
-input('Process finished successfully. Press any key to exit.\n')
+input('Process finished successfully. Press enter to exit.\n')

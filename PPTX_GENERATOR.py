@@ -9,11 +9,11 @@ def PPTX_GENERATOR(data):
         if (shape.has_text_frame):
             for i in data.items():
                 try:
-                    if i[0] in shape.text_frame.text.lower():
+                    if i[0] == shape.text_frame.text.lower():
                         shape.text_frame.paragraphs[0].runs[0].text = name_change(
                             i[1])
                 except:
-                    if i[0] in shape.text_frame.text.lower():
+                    if i[0] == shape.text_frame.text.lower():
                         shape.text_frame.paragraphs[0].runs[0].text = i[1]
 
     # указываем создателя
@@ -23,9 +23,9 @@ def PPTX_GENERATOR(data):
 
     #  для хранения сертификатов создаём две папки, в которых тоже будут папки
     #  внитри GENERATED_PPTX и GENERATED_PDF будут папки-даты
-    os.makedirs('GENERATED_PPTX/{}'.format(data['date']),
+    os.makedirs(f"GENERATED_PPTX/{data['date']}",
                 exist_ok=True)  # создаём папку
-    os.makedirs('GENERATED_PDF/{}'.format(data['date']),
+    os.makedirs(f"GENERATED_PDF/{data['date']}",
                 exist_ok=True)  # создаём папку
     prs.save('GENERATED_PPTX/' + data['date'] + '/' +
              data['file_name'] + '_' + data['id'] + '.pptx')
