@@ -23,11 +23,8 @@ def PPTX_GENERATOR(data):
 
     #  для хранения сертификатов создаём две папки, в которых тоже будут папки
     #  внитри GENERATED_PPTX и GENERATED_PDF будут папки-даты
-    os.makedirs(f"GENERATED_PPTX/{data['date']}",
-                exist_ok=True)  # создаём папку
-    os.makedirs(f"GENERATED_PDF/{data['date']}",
-                exist_ok=True)  # создаём папку
+    
     prs.save('GENERATED_PPTX/' + data['date'] + '/' +
-             data['file_name'] + '_' + data['id'] + '.pptx')
+             data['file name'] + '_' + data['id'] + '.pptx')
     # имя файла для перевода его в PDF
-    return(data['file_name'] + '_' + data['id'])
+    return(data['file name'] + '_' + data['id'])
