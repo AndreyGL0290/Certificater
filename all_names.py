@@ -9,7 +9,7 @@ def all_names(name):
     else:
         name = name.split('.')[0]+'.xlsx'
     wb = tuple(load_workbook(name).active.values)
-    print(wb, '\n')
+    print(wb, '\n\n')
     ans = list()
     for i in range(1, len(wb)):
         a = dict()
@@ -23,5 +23,5 @@ def all_names(name):
 
         ans.append(a)
 
-    print('\n'.join(map(str, ans)), '\n' * 2)
+    print('\n\n'.join(map(str, ans)), '\n' * 2)
     return ans
