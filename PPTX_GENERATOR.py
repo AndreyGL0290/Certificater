@@ -25,6 +25,6 @@ def PPTX_GENERATOR(data):
     #  внитри GENERATED_PPTX и GENERATED_PDF будут папки-даты
     
     prs.save('GENERATED_PPTX/' + data['date'] + '/' +
-             data['file name'] + '_' + data['id'] + '.pptx')
+             data['file_name'] + '_' + data['id'] + '.pptx')
     # имя файла для перевода его в PDF
-    return(data['file name'] + '_' + data['id'])
+    return(data['file_name'] + '_' + data['id'])
