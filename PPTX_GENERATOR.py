@@ -4,7 +4,7 @@ import os
 
 
 def PPTX_GENERATOR(data):
-    prs = Presentation(data['template'] + '.pptx')
+    prs = Presentation(data['template'])
     for shape in prs.slides[0].shapes:  # перебираем объекты на слайде
         if (shape.has_text_frame):
             for i in data.items():

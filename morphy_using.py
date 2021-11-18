@@ -21,12 +21,11 @@ def name_change(name):
         NamePart.FIRSTNAME, gender, Case.DATIVE, full_name[1])
     cased_sur_name = maker.make(
         NamePart.LASTNAME, gender, Case.DATIVE, full_name[0])
-    cased_patronymic = maker.make(
-        NamePart.MIDDLENAME, gender, Case.DATIVE, full_name[2])
+    #  cased_patronymic = maker.make(
+    #     NamePart.MIDDLENAME, gender, Case.DATIVE, full_name[2])
 
-    final_name = cased_sur_name + ' ' + cased_first_name + ' ' + cased_patronymic
+    final_name = cased_sur_name + ' ' + cased_first_name # + ' ' + cased_patronymic
     final_name = final_name.strip()
-    print(name, ' => ', final_name, '\n')
 
     return final_name
 
