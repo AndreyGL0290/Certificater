@@ -1,7 +1,6 @@
 import pymorphy2 as pmr
 from pytrovich.enums import NamePart, Gender, Case
 from pytrovich.maker import PetrovichDeclinationMaker
-import copy
 
 
 def name_change(name):
