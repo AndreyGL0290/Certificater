@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="HomePage.css">
+    <script type="text/javascript" src="eel.js"></script>
+    <title>Certificater</title>
+</head>
+<body>
+    <div class="left-side">
+        <div class="options-container">
+            <a class="option" onclick="document.getElementById('input-file').click();">Загрузить Excel файл</a>
+            <input class="option" id="input-file" type="file" name="input" style="display: none;" />
+            <span class="choosed-file-label">Не выбрано</span>
+
+            <a class="option" onclick="document.getElementById('output-file').click();">Загрузить шаблон</a>
+            <input class="option" id="output-file" type="file" name="output" style="display: none;" />
+            <span class="choosed-file-label">Не выбрано</span>
+
+            <a class="option" id="create">Создать</a>
+        </div>
+    </div>
+    <div class="right-side">
+        <div class="logo-container">
+            <video width="320" height="240" autoplay muted loop>
+                <source src="Kvantorium.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+              </video>
+        </div>
+    </div>
+    <script type="text/javascript" src="script.js"></script>
+</body>
+</html>
