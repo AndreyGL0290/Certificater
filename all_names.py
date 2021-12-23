@@ -3,12 +3,15 @@ import datetime
 import uuid
 
 
-def all_names(name, template):
-    if name == '':
-        name = 'list.xlsx'
+def all_names(work_list, template):
+    print(work_list, template)
+    if work_list == '':
+        work_list = 'list.xlsx'
     else:
-        name = name.split('.')[0]+'.xlsx'
-    wb = tuple(load_workbook(name).active.values)
+        # Меняем расширение файла на .xlsx на случай если человек выберет немного другой формат Excel таблицы
+        work_list = work_list.split('.')[0]+'.xlsx'
+    # Для работы с Excel таблицей
+    wb = tuple(load_workbook(work_list).active.values)
     ans = list()
     for i in range(1, len(wb)):
         a = dict()
