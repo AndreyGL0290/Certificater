@@ -12,7 +12,10 @@ def start(input_file_name, output_file_name):
     from PPTX_GENERATOR import PPTX_GENERATOR
     import os
     import shutil
+    print(input_file_name, output_file_name)
     data = all_names(input_file_name, output_file_name)
+    # То что ниже нужно для тетинга
+    # data = all_names('list1.xlsx', 'tmplt1.pptx')
 
     os.makedirs(f"GENERATED_PPTX/{data[0]['date']}",
                 exist_ok=True)
@@ -26,7 +29,6 @@ def start(input_file_name, output_file_name):
                 exist_ok=True)
     os.makedirs(f"GENERATED_PDF/{data[0]['date']}",
                 exist_ok=True)
-
     for loc in data:
         file_name = PPTX_GENERATOR(loc)
         command = "python PPTX_to_PDF.py " + file_name + " " + loc['date']
@@ -34,4 +36,4 @@ def start(input_file_name, output_file_name):
         file = file_name.replace("©", " ")
 
 if __name__ == "__main__":
-    eel.start("HomePage.html", geometry={"size": (600, 400), "position": (400, 6000)}, port=8002)
+    eel.start("HomePage.html", geometry={"size": (600, 400), "position": (400, 600)}, port=8002)
