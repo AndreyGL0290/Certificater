@@ -1,19 +1,16 @@
 const create = document.getElementById("create");
 
+let input = document.getElementById("input-file");
+let output = document.getElementById("output-file");
+
+input.addEventListener('change', () => {
+    document.getElementsByClassName("choosed-file-label")[0].textContent = input.files[0].name;
+});
+
+output.addEventListener('change', () => {
+    document.getElementsByClassName("choosed-file-label")[1].textContent = output.files[0].name
+});
 
 create.addEventListener("click", () => {
-    let inputFile = document.getElementById("input-file").files[0].name;
-    let outputFile = document.getElementById("output-file").files[0].name;
-    console.log(inputFile, outputFile);
-    eel.start(inputFile, outputFile);
-});
-let input = document.getElementById("input-file");
-input.addEventListener('change', () => {
-    console.log(input.files[0].name)
-    document.getElementsByClassName("choosed-file-label")[0].innerHTML = input.files[0].name;
-});
-
-let output = document.getElementById("output-file");
-output.addEventListener('change', () => {
-    document.getElementsByClassName("choosed-file-label")[1].innerHTML = output.files[0].name
+    eel.start(input.files[0].name, output.files[0].name);
 });
