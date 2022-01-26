@@ -30,4 +30,3 @@ def PPTX_GENERATOR(data):
     prs.save('GENERATED_PPTX/' + data['date'] + '/' + data['file_name'] + '_' + data['id'] + '.pptx')
     # имя файла для перевода его в PDF
     return (data['file_name'] + '_' + data['id'])
-3
