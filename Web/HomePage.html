@@ -11,22 +11,28 @@
 <body>
     <div class="left-side">
         <div class="options-container">
-            <a class="option" onclick="document.getElementById('input-file').click();">Загрузить Excel файл</a>
-            <input class="option" id="input-file" type="file" name="input" style="display: none;" />
-            <span class="choosed-file-label">Не выбрано</span>
+            <div class="file-system">
+                <a class="option" onclick="document.getElementById('input-file').click();">Загрузить Excel файл</a>
+                <input class="option" id="input-file" type="file" name="input" style="display: none;" />
+                <span class="choosed-file-label">Не выбрано</span>
+            </div>
 
-            <a class="option" onclick="document.getElementById('output-file').click();">Загрузить шаблон</a>
-            <input class="option" id="output-file" type="file" name="output" style="display: none;" />
-            <span class="choosed-file-label">Не выбрано</span>
-
-            <a class="option" id="create">Создать</a>
+            <div class="file-system">
+                <a class="option" onclick="document.getElementById('output-file').click();">Загрузить шаблон</a>
+                <input class="option" id="output-file" type="file" name="output" style="display: none;" />
+                <span class="choosed-file-label">Не выбрано</span>
+            </div>
+            <div class="file-system">
+                <a class="option" id="create">Создать</a>
+                <label class="file-send"><input type="checkbox" id="send" value="1">Отправить файлы после создания?</label>
+            </div>
         </div>
     </div>
     <div class="right-side">
         <div class="logo-container">
             <video width="320" height="240" autoplay muted loop>
                 <source src="Kvantorium.mp4" type="video/mp4">
-              Your browser does not support the video tag.
+              Ваш браузер не поддерживает видео тэг
               </video>
         </div>
     </div>
