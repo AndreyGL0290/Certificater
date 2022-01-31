@@ -30,3 +30,27 @@ def PPTX_GENERATOR(data):
     prs.save('GENERATED_PPTX/' + data['date'] + '/' + data['file_name'] + '_' + data['id'] + '.pptx')
     # имя файла для перевода его в PDF
     return (data['file_name'] + '_' + data['id'])
+
+
+# # Дублируем слайд
+# def duplicate_slide(pres, index=0):
+#     template = pres.slides[index]
+#     blank_slide_layout = pres.slide_layouts[0] # Говорим что слайд будет титульным (1 - титульный слайд)
+
+#     copied_slide = pres.slides.add_slide(blank_slide_layout)
+    
+
+#     for shp in template.shapes:
+#         el = shp.element
+#         newel = copy.deepcopy(el)
+#         copied_slide.shapes._spTree.insert_element_before(newel, 'p:extLst')
+
+#     # Копируем .rels которые ведут нас к изображению, без этого картинка не отоброзится
+#     for _, value in six.iteritems(template.part.rels):
+#         # Make sure we don't copy a notesSlide relation as that won't exist
+#         if "notesSlide" not in value.reltype:
+#             copied_slide.part.rels.add_relationship(
+#                 value.reltype,
+#                 value._target,
+#                 value.rId
+#             )
