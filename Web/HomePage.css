@@ -72,7 +72,19 @@ span {
     color: black;
 }
 
+.file-system{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
 
+.file-send{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
 
 .option:hover {
     background-color: black;
