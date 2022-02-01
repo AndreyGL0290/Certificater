@@ -18,11 +18,22 @@ eel.init(path + "\\Web")
 Модификация склонения (по отчеству, если его нет, то morphy)
 НЕ СКЛОНЯТЬ другие текстовые поля
 При наличии не используемых полей возникает ошибка
+Не открывать и закрывать каждый раз Power Point
 
 Надо сделать:
-Не открывать и закрывать каждый раз Power Point
-Callback - делать pdf после полного создания 
+Сделать чтобы галка появлялась только после ввода, а кнопка "ввести почту" менялась на "обновить почту"
+Сделать поп ап с формой ввода
+Сделать хэндлинг различных возникающиз проблем
+Поправить дизайн
 '''
+
+@eel.expose
+def create_email_info(e, p):
+    # Создаем или перезаписываем файл имеющейся информацией
+    with open(".env", 'w') as env:
+        env.write(f"MY_ADRESS = {e}\n")
+        env.write(f"MY_PASSWORD = {p}\n")
+    load_dotenv()
 
 def init_powerpoint():
     powerpoint = comtypes.client.CreateObject("Powerpoint.Application")
@@ -31,18 +42,27 @@ def init_powerpoint():
     return powerpoint
 
 @eel.expose
-def start(input_file_name, output_file_name, send):
+def start(input_file_name, output_file_name, send):    
     print(time.time())
     print(send)
+
     from PPTX_to_PDF import main
     from sending import login, send_email
     from all_names import all_names
     from PPTX_GENERATOR import PPTX_GENERATOR
     import os
     import shutil
-    # data = all_names(input_file_name, output_file_name)
+    from smtplib import SMTPAuthenticationError
+    import os
+
+    if send:
+            try:
+                os.environ["MY_ADRESS"]
+            except KeyError:
+                eel.raise_error("Почтовые данные не найдены, но сертификаты созданы", "error")
+
+    data = all_names(input_file_name, output_file_name)
     # То что ниже нужно для тестинга
-    data = all_names('data_copy_small.xlsx', 'tmplt1.pptx')
 
     os.makedirs(f"GENERATED_PPTX/{data[0]['date']}",
                 exist_ok=True)
@@ -63,16 +83,22 @@ def start(input_file_name, output_file_name, send):
         file_name = PPTX_GENERATOR(loc)
         # command = "python PPTX_to_PDF.py " + file_name + " " + loc['date']
         main(file_name, loc['date'], powerpoint)
-        
+
         if send:
             try:
-                send_email(loc['email'], login(), loc['date'], file_name)
+                smtps = login()
+                send_email(loc['email'], smtps, loc['date'], file_name)
+            except SMTPAuthenticationError:
+                eel.raise_error("Не верно указан пароль от почты.\n Статья о других возможных проблемах по ссылке", "error")
+                send = False
             except KeyError:
-                print("В Excel файле нет поля email, файлы не были отправлены")
+                eel.raise_error("В Excel документе нет поля email, сертификаты не были отправлены", "error")
+                send = False
         # file = file_name.replace("©", " ")
 
     powerpoint.Quit()
     print(time.time())
 
 if __name__ == "__main__":
-    eel.start("HomePage.html", geometry={"size": (600, 400), "position": (400, 600)}, port=8002)
+    eel.start("HomePage.html", geometry={"size": (
+        600, 400), "position": (400, 600)}, port=8002)
