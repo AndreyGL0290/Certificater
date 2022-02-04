@@ -47,7 +47,11 @@ checkbox.addEventListener('click', () => {
 
 create.addEventListener("click", () => {
     try {
-        eel.start(input.files[0].name, output.files[0].name, value);
+        if (output.files[0] == undefined){
+            eel.start(input.files[0].name, '', value);
+        } else {
+            eel.start(input.files[0].name, output.files[0].name, value);
+        }
     } catch (error) {
         if (error instanceof TypeError) document.getElementById('error').textContent = "Выберите файлы";
         else document.getElementById('error').textContent = "Что то пошло не так...";
