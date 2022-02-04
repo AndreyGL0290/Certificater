@@ -64,7 +64,7 @@ span {
     max-width: 50%;
     width: 50%;
     text-align: left;
-    transition: .5s;
+    transition: .5s all;
     padding: 5px;
     border: 1px black solid;
     box-sizing: border-box;
@@ -80,7 +80,8 @@ span {
 }
 
 .file-send{
-    width: 100%;
+    width: 50%;
+    max-width: 50%;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -176,11 +177,11 @@ span {
 }
 
 .popup input:focus {
-    border-bottom: 1px solid #2982ff;
+    border-bottom: 1px solid #000000;
 }
 
 .popup input:focus + .label__text {
-    color: #2982ff;
+    color: #000000;
 }
 
 .popup textarea {
@@ -195,11 +196,11 @@ span {
 }
 
 .popup textarea:focus {
-    border-bottom: 1px solid #2982ff;
+    border-bottom: 1px solid #000000;
 }
 
 .popup textarea:focus + .label__text {
-    color: #2982ff;
+    color: #000000;
 }
 
 .popup button {
@@ -208,17 +209,17 @@ span {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: rgb(255, 255, 255);
     font-size: 18px;
-    border: 2px solid #2982ff;
-    background: #2982ff;
+    border: 2px solid #000000;
+    background: #000000;
     cursor: pointer;
     text-transform: uppercase;
     transition: 0.5s all;
 }
 
 .popup button:hover {
-    background: #fff;
-    color:#2982ff;
+    background: rgb(255, 255, 255);
+    color:#000000;
     transition: 0.5s all;
 }
