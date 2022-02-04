@@ -25,10 +25,14 @@ def all_names(work_list, template):
                 a[wb[0][j]] = wb[1][j]
             else:
                 a[wb[0][j]] = wb[i][j]
-        a['template'] = template
+        # Если в Excel файле уже указаны шаблоны, то используем их.
+        # Но если они есть в Excel, а человек ввел еще и свой, то используем тот что ввел человек.
+        if template != '':
+            a['template'] = template
         a['date'] = "{:02d}".format(datetime.date.today().day) + "." + "{:02d}".format(
             datetime.date.today().month) + "." + str(datetime.date.today().year)
         a['id'] = uuid.uuid4().hex
+        # Имя файла - ФИО человека и + id в дальнейшем
         a['file_name'] = a['name']
 
         ans.append(a)
