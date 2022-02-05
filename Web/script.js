@@ -67,6 +67,6 @@ document.getElementById('send-email').addEventListener('click', () => {
 })
 
 eel.expose(raise_error);
-function raise_error(error, place_id) {
-    document.getElementById(place_id).textContent = error;
+function raise_error(error) {
+    document.getElementById('error').textContent = error;
 }

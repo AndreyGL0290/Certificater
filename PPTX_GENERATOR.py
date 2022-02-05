@@ -1,8 +1,13 @@
+from importlib.metadata import PackageNotFoundError
 from morphy_using import name_change
 from pptx import Presentation
+from pptx.exc import PackageNotFoundError as PNFE
 
 def PPTX_GENERATOR(data):
-    prs = Presentation(data['template'])
+    try:
+        prs = Presentation(data['template'])
+    except PNFE:
+        return "Template"
     for shape in prs.slides[0].shapes:  # перебираем объекты на слайде
         if (shape.has_text_frame):
             for key, value in data.items():

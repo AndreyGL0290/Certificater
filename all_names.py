@@ -14,8 +14,13 @@ def all_names(work_list, template):
             for i in range(len(parts) - 1):
                 work_list += parts[i] + "."
             work_list += 'xlsx'
+
     # Для работы с Excel таблицей
-    wb = tuple(load_workbook(work_list).active.values)
+    try:
+        wb = tuple(load_workbook(work_list).active.values)
+    except FileNotFoundError:
+        return "Excel"
+
     ans = list()
     for i in range(1, len(wb)):
         a = dict()
