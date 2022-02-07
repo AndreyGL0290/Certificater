@@ -30,16 +30,14 @@ span {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    align-items: center;
     width: 50%;
     height: 100%;
 }
 
-.options-container {
-    display: flex;
-    height: 60%;
-    justify-content: space-between;
-    flex-direction: column;
-    align-items: center;
+.box-label {
+    width: 80%;
+    height: fit-content;
 }
 
 .button {
@@ -61,8 +59,9 @@ span {
 }
 
 .option {
-    max-width: 50%;
-    width: 50%;
+    max-width: 100%;
+    width: 100%;
+    margin-top: 10px;
     text-align: left;
     transition: .5s all;
     padding: 5px;
@@ -80,8 +79,9 @@ span {
 }
 
 .file-send{
-    width: 50%;
-    max-width: 50%;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 10px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -96,6 +96,7 @@ span {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     width: 50%;
     height: 100%;
 }
@@ -104,6 +105,11 @@ span {
     visibility: visible;
     text-align: center;
     font-size: 14pt;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
 }
 
 .logo {
