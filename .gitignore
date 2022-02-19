@@ -4,4 +4,11 @@
 ### dotenv ###
 .env
 
+### Certificates ###
+GENERATED_PPTX
+GENERATED_PDF
+
+### Cash ###
+__pycache__
+
 # End of https://www.toptal.com/developers/gitignore/api/dotenv
