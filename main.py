@@ -1,9 +1,11 @@
+from operator import indexOf
 import os
 import eel
 import time
-import comtypes.client
+from smtplib import SMTPAuthenticationError
+import concurrent.futures
+from comtypes.client import CreateObject
 from dotenv import load_dotenv
-
 # Загружаем секретные переменные
 load_dotenv()
 
@@ -19,12 +21,12 @@ eel.init(path + "\\Web")
 НЕ СКЛОНЯТЬ другие текстовые поля
 При наличии не используемых полей возникает ошибка
 Не открывать и закрывать каждый раз Power Point
+Сделать поп ап с формой ввода email
+Сделать хэндлинг различных возникающих проблем
+Поправить дизайн
 
 Надо сделать:
 Сделать чтобы галка появлялась только после ввода, а кнопка "ввести почту" менялась на "обновить почту"
-Сделать поп ап с формой ввода
-Сделать хэндлинг различных возникающиз проблем
-Поправить дизайн
 '''
 
 @eel.expose
@@ -35,23 +37,22 @@ def create_email_info(e, p):
         env.write(f"MY_PASSWORD = {p}\n")
     load_dotenv()
 
-def init_powerpoint():
-    powerpoint = comtypes.client.CreateObject("Powerpoint.Application")
-    powerpoint.UserControl = 0
-    powerpoint.Visible = 1
-    return powerpoint
+# def init_powerpoint():
+#     powerpoint = CreateObject('PowerPoint.Application')
+#     powerpoint.UserControl = 0
+#     powerpoint.Visible = 1
+#     return powerpoint
 
 @eel.expose
 def start(input_file_name, output_file_name, send):    
-    print(time.time())
+    t1 = time.perf_counter()
 
-    from PPTX_to_PDF import main
+    from PPTX_to_PDF import pptx_to_pdf
     from sending import login, send_email
     from all_names import all_names
     from PPTX_GENERATOR import PPTX_GENERATOR
     import os
     import shutil
-    from smtplib import SMTPAuthenticationError
     import os
 
     if send:
@@ -65,7 +66,10 @@ def start(input_file_name, output_file_name, send):
 
     # Если Excel файл не найден
     if data == 'Excel':
-        eel.raise_error('Excel файл не найден')
+        eel.raise_error('Excel файл не найден или не указан')
+        return
+    elif data == 'Template':
+        eel.raise_error('Шаблон не найден или не указан')
         return
 
     os.makedirs(f"GENERATED_PPTX/{data[0]['date']}", exist_ok=True)
@@ -77,33 +81,38 @@ def start(input_file_name, output_file_name, send):
     os.makedirs(f"GENERATED_PPTX/{data[0]['date']}", exist_ok=True)
     os.makedirs(f"GENERATED_PDF/{data[0]['date']}", exist_ok=True)
 
-    powerpoint = init_powerpoint()
+    
+    # Запускаем асинхронное редактирование pptx
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        file_name = list(executor.map(PPTX_GENERATOR, data))
 
+    # with concurrent.futures.ThreadPoolExecutor() as executor:
+    #     print(list(executor.map(pptx_to_pdf, file_name)))
+
+    # Перебираем каждый элемент в массиве
     for loc in data:
-        file_name = PPTX_GENERATOR(loc)
-        if file_name == "Template":
-            eel.raise_error("Файл-шаблон не найден")
-            powerpoint.Quit()
-            return
-        # command = "python PPTX_to_PDF.py " + file_name + " " + loc['date']
-        main(file_name, loc['date'], powerpoint)
+        # file_name = PPTX_GENERATOR(loc)
+        # if file_name == 'empty':
+        #     powerpoint.Quit()
+        #     t2 = time.perf_counter()
+        #     print(f"Finished in {t2-t1} second(s)")
+        #     return
+        pptx_to_pdf(file_name[indexOf(data, loc)])
+        # pptx_to_pdf(file_name, loc['date'], powerpoint)
+        # if send:
+        #     try:
+        #         smtps = login()
+        #         send_email(loc['email'], smtps, loc['date'], file_name)
+        #     except SMTPAuthenticationError:
+        #         eel.raise_error("Не верно указан пароль от почты.\n Статья о других возможных проблемах по ссылке")
+        #         send = False
+        #     except KeyError:
+        #         eel.raise_error("В Excel документе нет поля email, сертификаты не были отправлены")
+        #         send = False
 
-        if send:
-            try:
-                smtps = login()
-                send_email(loc['email'], smtps, loc['date'], file_name)
-            except SMTPAuthenticationError:
-                eel.raise_error("Не верно указан пароль от почты.\n Статья о других возможных проблемах по ссылке")
-                send = False
-            except KeyError:
-                eel.raise_error("В Excel документе нет поля email, сертификаты не были отправлены")
-                send = False
-        # file = file_name.replace("©", " ")
-
-    powerpoint.Quit()
     eel.raise_error("Процесс успешно завершен")
-    print(time.time())
+    t2 = time.perf_counter()
+    print(f"Finished in {t2-t1} second(s)")
 
 if __name__ == "__main__":
-    eel.start("HomePage.html", geometry={"size": (
-        600, 400), "position": (400, 600)}, port=8002)
+    eel.start("HomePage.html", geometry={"size": (600, 400), "position": (400, 600)}, port=8002)
