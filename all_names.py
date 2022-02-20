@@ -32,8 +32,11 @@ def all_names(work_list, template):
                 a[wb[0][j]] = wb[i][j]
         # Если в Excel файле уже указаны шаблоны, то используем их.
         # Но если они есть в Excel, а человек ввел еще и свой, то используем тот что ввел человек.
-        if template != '':
-            a['template'] = template
+        if "template" != a.keys():
+            if template != '':
+                a['template'] = template
+            else:
+                return "Template"
         a['date'] = "{:02d}".format(datetime.date.today().day) + "." + "{:02d}".format(
             datetime.date.today().month) + "." + str(datetime.date.today().year)
         a['id'] = uuid.uuid4().hex
