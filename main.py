@@ -1,10 +1,14 @@
+from math import ceil, floor
 from operator import indexOf
 import os
+import multiprocessing
 import eel
 import time
+import threading
 from smtplib import SMTPAuthenticationError
 import concurrent.futures
 from comtypes.client import CreateObject
+from comtypes import CoInitializeEx, CoUninitialize
 from dotenv import load_dotenv
 # Загружаем секретные переменные
 load_dotenv()
@@ -45,7 +49,7 @@ def create_email_info(e, p):
 
 @eel.expose
 def start(input_file_name, output_file_name, send):    
-    t1 = time.perf_counter()
+    time1 = time.perf_counter()
 
     from PPTX_to_PDF import pptx_to_pdf
     from sending import login, send_email
@@ -86,18 +90,43 @@ def start(input_file_name, output_file_name, send):
     with concurrent.futures.ThreadPoolExecutor() as executor:
         file_name = list(executor.map(PPTX_GENERATOR, data))
 
-    # with concurrent.futures.ThreadPoolExecutor() as executor:
-    #     print(list(executor.map(pptx_to_pdf, file_name)))
+    # print(file_name)
 
+    # print(0, ceil(len(file_name)/4))
+    # print(ceil(len(file_name)/4), ceil(len(file_name)/2))
+    # print(ceil(len(file_name)/2), ceil(3*len(file_name)/4))
+    # print(ceil(3*len(file_name)/4), 50)
+
+    # print(file_name[:ceil(len(file_name)/4):])
+    # print(file_name[ceil(len(file_name)/4):ceil(len(file_name)/2):])
+    # print(file_name[ceil(len(file_name)/2):ceil(3*len(file_name)/4):])
+    # print(file_name[ceil(3*len(file_name)/4)::])
+
+    # t1 = threading.Thread(target=pptx_to_pdf, args=[file_name[:ceil(len(file_name)/4):]])
+    # t1.start()
+    # t2 = threading.Thread(target=pptx_to_pdf, args=[file_name[ceil(len(file_name)/4):ceil(len(file_name)/2):]])
+    # t2.start()
+    # t3 = threading.Thread(target=pptx_to_pdf, args=[file_name[ceil(len(file_name)/2):ceil(3*len(file_name)/4):]])
+    # t3.start()
+    # t4 = threading.Thread(target=pptx_to_pdf, args=[file_name[ceil(3*len(file_name)/4)::]])
+    # t4.start()
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+        executor.map(pptx_to_pdf, [file_name[:ceil(len(file_name)/4):], file_name[ceil(len(file_name)/4):ceil(len(file_name)/2):], file_name[ceil(len(file_name)/2):ceil(3*len(file_name)/4):], file_name[ceil(3*len(file_name)/4)::]])
+
+    # t1.join()
+    # t2.join()
+    # t3.join()
+    # t4.join()
     # Перебираем каждый элемент в массиве
-    for loc in data:
+    # for loc in data:
         # file_name = PPTX_GENERATOR(loc)
         # if file_name == 'empty':
         #     powerpoint.Quit()
         #     t2 = time.perf_counter()
         #     print(f"Finished in {t2-t1} second(s)")
         #     return
-        pptx_to_pdf(file_name[indexOf(data, loc)])
+        # pptx_to_pdf(file_name[indexOf(data, loc)], powerpoint)
         # pptx_to_pdf(file_name, loc['date'], powerpoint)
         # if send:
         #     try:
@@ -111,8 +140,9 @@ def start(input_file_name, output_file_name, send):
         #         send = False
 
     eel.raise_error("Процесс успешно завершен")
-    t2 = time.perf_counter()
-    print(f"Finished in {t2-t1} second(s)")
+    time2 = time.perf_counter()
+    # powerpoint.Quit()
+    print(f"Finished in {time2-time1} second(s)")
 
 if __name__ == "__main__":
     eel.start("HomePage.html", geometry={"size": (600, 400), "position": (400, 600)}, port=8002)

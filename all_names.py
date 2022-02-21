@@ -20,7 +20,6 @@ def all_names(work_list, template):
         wb = tuple(load_workbook(work_list).active.values)
     except FileNotFoundError:
         return "Excel"
-
     ans = list()
     for i in range(1, len(wb)):
         a = dict()
@@ -29,7 +28,8 @@ def all_names(work_list, template):
             if wb[0][j] == 'case':
                 a[wb[0][j]] = wb[1][j]
             else:
-                a[wb[0][j]] = wb[i][j]
+                if wb[i][0] != None:
+                    a[wb[0][j]] = wb[i][j]
         # Если в Excel файле уже указаны шаблоны, то используем их.
         # Но если они есть в Excel, а человек ввел еще и свой, то используем тот что ввел человек.
         if "template" != a.keys():
