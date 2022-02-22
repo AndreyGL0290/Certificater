@@ -3,8 +3,7 @@ datetime
 openpyxl
 comtypes
 eel
-smtplib
-email
+dotenv
 python-pptx
 pytrovich
 pymorphy2
