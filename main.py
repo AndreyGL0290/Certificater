@@ -1,10 +1,8 @@
-from math import ceil, floor
-from operator import indexOf
+from math import ceil
+from operator import index, indexOf
 import os
-import multiprocessing
 import eel
 import time
-import threading
 from smtplib import SMTPAuthenticationError
 import concurrent.futures
 from comtypes.client import CreateObject
@@ -41,11 +39,11 @@ def create_email_info(e, p):
         env.write(f"MY_PASSWORD = {p}\n")
     load_dotenv()
 
-# def init_powerpoint():
-#     powerpoint = CreateObject('PowerPoint.Application')
-#     powerpoint.UserControl = 0
-#     powerpoint.Visible = 1
-#     return powerpoint
+def init_powerpoint():
+    powerpoint = CreateObject('PowerPoint.Application')
+    powerpoint.UserControl = 0
+    powerpoint.Visible = 1
+    return powerpoint
 
 @eel.expose
 def start(input_file_name, output_file_name, send):    
@@ -85,41 +83,17 @@ def start(input_file_name, output_file_name, send):
     os.makedirs(f"GENERATED_PPTX/{data[0]['date']}", exist_ok=True)
     os.makedirs(f"GENERATED_PDF/{data[0]['date']}", exist_ok=True)
 
-    
     # Запускаем асинхронное редактирование pptx
     with concurrent.futures.ThreadPoolExecutor() as executor:
         file_name = list(executor.map(PPTX_GENERATOR, data))
 
-    # print(file_name)
+    powerpoint = init_powerpoint()
 
-    # print(0, ceil(len(file_name)/4))
-    # print(ceil(len(file_name)/4), ceil(len(file_name)/2))
-    # print(ceil(len(file_name)/2), ceil(3*len(file_name)/4))
-    # print(ceil(3*len(file_name)/4), 50)
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+    #     print(list(executor.map(pptx_to_pdf, [{"file_name": file_name[:ceil(len(file_name)/2):], 'powerpoint': powerpoint}, {"file_name": file_name[ceil(len(file_name)/2)::], "powerpoint": powerpoint}])))
 
-    # print(file_name[:ceil(len(file_name)/4):])
-    # print(file_name[ceil(len(file_name)/4):ceil(len(file_name)/2):])
-    # print(file_name[ceil(len(file_name)/2):ceil(3*len(file_name)/4):])
-    # print(file_name[ceil(3*len(file_name)/4)::])
-
-    # t1 = threading.Thread(target=pptx_to_pdf, args=[file_name[:ceil(len(file_name)/4):]])
-    # t1.start()
-    # t2 = threading.Thread(target=pptx_to_pdf, args=[file_name[ceil(len(file_name)/4):ceil(len(file_name)/2):]])
-    # t2.start()
-    # t3 = threading.Thread(target=pptx_to_pdf, args=[file_name[ceil(len(file_name)/2):ceil(3*len(file_name)/4):]])
-    # t3.start()
-    # t4 = threading.Thread(target=pptx_to_pdf, args=[file_name[ceil(3*len(file_name)/4)::]])
-    # t4.start()
-
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
-        executor.map(pptx_to_pdf, [file_name[:ceil(len(file_name)/4):], file_name[ceil(len(file_name)/4):ceil(len(file_name)/2):], file_name[ceil(len(file_name)/2):ceil(3*len(file_name)/4):], file_name[ceil(3*len(file_name)/4)::]])
-
-    # t1.join()
-    # t2.join()
-    # t3.join()
-    # t4.join()
     # Перебираем каждый элемент в массиве
-    # for loc in data:
+    for loc in data:
         # file_name = PPTX_GENERATOR(loc)
         # if file_name == 'empty':
         #     powerpoint.Quit()
@@ -127,17 +101,17 @@ def start(input_file_name, output_file_name, send):
         #     print(f"Finished in {t2-t1} second(s)")
         #     return
         # pptx_to_pdf(file_name[indexOf(data, loc)], powerpoint)
-        # pptx_to_pdf(file_name, loc['date'], powerpoint)
-        # if send:
-        #     try:
-        #         smtps = login()
-        #         send_email(loc['email'], smtps, loc['date'], file_name)
-        #     except SMTPAuthenticationError:
-        #         eel.raise_error("Не верно указан пароль от почты.\n Статья о других возможных проблемах по ссылке")
-        #         send = False
-        #     except KeyError:
-        #         eel.raise_error("В Excel документе нет поля email, сертификаты не были отправлены")
-        #         send = False
+        pptx_to_pdf(file_name[indexOf(data, loc)], loc['date'], powerpoint)
+        if send:
+            try:
+                smtps = login()
+                send_email(loc['email'], smtps, loc['date'], file_name)
+            except SMTPAuthenticationError:
+                eel.raise_error("Не верно указан пароль от почты.\n Статья о других возможных проблемах по ссылке")
+                send = False
+            except KeyError:
+                eel.raise_error("В Excel документе нет поля email, сертификаты не были отправлены")
+                send = False
 
     eel.raise_error("Процесс успешно завершен")
     time2 = time.perf_counter()
