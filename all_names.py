@@ -20,16 +20,19 @@ def all_names(work_list, template):
         wb = tuple(load_workbook(work_list).active.values)
     except FileNotFoundError:
         return "Excel"
+    print(len(wb))
     ans = list()
     for i in range(1, len(wb)):
         a = dict()
-        for j in range(len(wb[i])):
+        for j in range(len(wb[i])):                
             # Это сделано чтобы указывать падеж только на одной строке, а не на каждой
             if wb[0][j] == 'case':
                 a[wb[0][j]] = wb[1][j]
             else:
-                if wb[i][0] != None:
-                    a[wb[0][j]] = wb[i][j]
+                # Если ячейка, в которой должно быть слово-заместитель пусто, то не записываем ее значение
+                if wb[0][j] == None:
+                    continue
+                a[wb[0][j]] = wb[i][j]
         # Если в Excel файле уже указаны шаблоны, то используем их.
         # Но если они есть в Excel, а человек ввел еще и свой, то используем тот что ввел человек.
         if "template" != a.keys():
@@ -41,7 +44,13 @@ def all_names(work_list, template):
             datetime.date.today().month) + "." + str(datetime.date.today().year)
         a['id'] = uuid.uuid4().hex
         # Имя файла - ФИО человека и + id в дальнейшем
-        a['file_name'] = a['name']
 
-        ans.append(a)
+        # Если в ячейке где должно быть имя пусто, то удаляем весь объект с данными об участнике
+        try:
+            if a['name'] != None:
+                a['file_name'] = a['name']
+                ans.append(a)
+        except KeyError:
+            pass
+    print(ans)
     return ans
