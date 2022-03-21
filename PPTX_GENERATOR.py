@@ -3,23 +3,23 @@ from pptx import Presentation
 
 def PPTX_GENERATOR(data):
     if data['name'] != None:
+        # print(data)
+        try:
+            data['name'] = name_change(data['name'], data['case'])
+        except KeyError:
+            pass
         prs = Presentation(data['template'])
-        for shape in prs.slides[0].shapes:  # перебираем объекты на слайде
-            if (shape.has_text_frame):
-                for key, value in data.items():
-                    
+        for shape in prs.slides[0].shapes:  # Перебираем объекты на слайде
+            if shape.has_text_frame:  # Если у объекта есть текст,
+                # print(shape)
+                # print(shape.text_frame.text)
+                for key, value in data.items():  # То смотрим равен является ли он словом-заместителем
                     try:
-                        if key == shape.text_frame.text.lower() == 'name':
-                            # Меняем слово-заместитель в презентации на склоненное значение этого слова в нашем словаре data
-                            try:
-                                shape.text_frame.paragraphs[0].runs[0].text = name_change(value, data['case'])
-                            # Если падеж не указан отдельно в Excel файле, то используем значение по умолчанию
-                            except KeyError:
-                                shape.text_frame.paragraphs[0].runs[0].text = name_change(value)
-                    except:
-                        if key == shape.text_frame.text.lower():
-                            # Меняем слово-заместитель в презентации на значение этого слова в нашем словаре data
-                            shape.text_frame.paragraphs[0].runs[0].text = value
+                        # Меняем слово-заместитель в презентации на значение этого слова в нашем словаре data
+                        if key.lower() == shape.text_frame.text.lower():
+                            shape.text_frame.paragraphs[0].runs[0].text = str(value)
+                    except AttributeError:
+                        pass
 
         # указываем создателя
         prs.core_properties.author = ""

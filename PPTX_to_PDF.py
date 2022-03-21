@@ -1,10 +1,7 @@
 from comtypes.client import CreateObject
-from comtypes import CoInitializeEx, CoUninitialize
-import datetime
 import os
 
 def init_powerpoint():
-    CoInitializeEx(0)
     powerpoint = CreateObject('PowerPoint.Application')
     powerpoint.UserControl = 0
     powerpoint.Visible = 1

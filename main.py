@@ -6,7 +6,6 @@ import time
 from smtplib import SMTPAuthenticationError
 import concurrent.futures
 from comtypes.client import CreateObject
-from comtypes import CoInitializeEx, CoUninitialize
 from dotenv import load_dotenv
 # Загружаем секретные переменные
 load_dotenv()
@@ -115,7 +114,7 @@ def start(input_file_name, output_file_name, send):
 
     eel.raise_error("Процесс успешно завершен")
     time2 = time.perf_counter()
-    # powerpoint.Quit()
+    powerpoint.Quit()
     print(f"Finished in {time2-time1} second(s)")
 
 if __name__ == "__main__":
