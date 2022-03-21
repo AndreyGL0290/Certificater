@@ -20,7 +20,6 @@ def all_names(work_list, template):
         wb = tuple(load_workbook(work_list).active.values)
     except FileNotFoundError:
         return "Excel"
-    print(len(wb))
     ans = list()
     for i in range(1, len(wb)):
         a = dict()
@@ -52,5 +51,4 @@ def all_names(work_list, template):
                 ans.append(a)
         except KeyError:
             pass
-    print(ans)
     return ans
