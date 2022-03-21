@@ -1,6 +1,6 @@
-from math import ceil
-from operator import index, indexOf
+from operator import indexOf
 import os
+import shutil
 import eel
 import time
 from smtplib import SMTPAuthenticationError
@@ -52,9 +52,6 @@ def start(input_file_name, output_file_name, send):
     from sending import login, send_email
     from all_names import all_names
     from PPTX_GENERATOR import PPTX_GENERATOR
-    import os
-    import shutil
-    import os
 
     if send:
         try:
@@ -72,6 +69,9 @@ def start(input_file_name, output_file_name, send):
     elif data == 'Template':
         eel.raise_error('Шаблон не найден или не указан')
         return
+
+    shutil.rmtree(f"GENERATED_PPTX/{data[0]['date']}")
+    shutil.rmtree(f"GENERATED_PDF/{data[0]['date']}")
 
     os.makedirs(f"GENERATED_PPTX/{data[0]['date']}", exist_ok=True)
     os.makedirs(f"GENERATED_PDF/{data[0]['date']}", exist_ok=True)
@@ -93,6 +93,7 @@ def start(input_file_name, output_file_name, send):
         #     t2 = time.perf_counter()
         #     print(f"Finished in {t2-t1} second(s)")
         #     return
+        # pptx_to_pdf(file_name, loc['date'], powerpoint)
         # pptx_to_pdf(file_name[indexOf(data, loc)], powerpoint)
         pptx_to_pdf(file_name[indexOf(data, loc)], loc['date'], powerpoint)
         if send:
