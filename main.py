@@ -76,12 +76,6 @@ def start(input_file_name, output_file_name, send):
     os.makedirs(f"GENERATED_PPTX/{data[0]['date']}", exist_ok=True)
     os.makedirs(f"GENERATED_PDF/{data[0]['date']}", exist_ok=True)
 
-    shutil.rmtree(f"GENERATED_PPTX/{data[0]['date']}")
-    shutil.rmtree(f"GENERATED_PDF/{data[0]['date']}")
-
-    os.makedirs(f"GENERATED_PPTX/{data[0]['date']}", exist_ok=True)
-    os.makedirs(f"GENERATED_PDF/{data[0]['date']}", exist_ok=True)
-
     # Запускаем асинхронное редактирование pptx
     with concurrent.futures.ThreadPoolExecutor() as executor:
         file_name = list(executor.map(PPTX_GENERATOR, data))
