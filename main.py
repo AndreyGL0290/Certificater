@@ -70,6 +70,10 @@ def start(input_file_name, output_file_name, send):
         eel.raise_error('Шаблон не найден или не указан')
         return
 
+    # Не спраашивай зачем так много, просто надо
+    os.makedirs(f"GENERATED_PPTX/{data[0]['date']}", exist_ok=True)
+    os.makedirs(f"GENERATED_PDF/{data[0]['date']}", exist_ok=True)
+
     shutil.rmtree(f"GENERATED_PPTX/{data[0]['date']}")
     shutil.rmtree(f"GENERATED_PDF/{data[0]['date']}")
 
