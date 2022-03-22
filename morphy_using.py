@@ -37,10 +37,10 @@ def name_change(name, case='nominative'):
         final_name = f'{cased_lastname} {cased_first_name} {cased_middle_name}'
     elif len(full_name) == 2:
         for i in range(len(morph.parse(full_name[1]))):
-            if 'masc' in morph.parse(full_name[1])[i].tag and 'NOUN' in morph.parse(full_name[1])[i].tag and 'sing' in morph.parse(full_name[1])[i].tag and 'nomn' in morph.parse(full_name[1])[i].tag:
+            if 'masc' in morph.parse(full_name[1])[i].tag and 'nomn' in morph.parse(full_name[1])[i].tag:
                 gender = Gender.MALE
                 break
-            elif 'femn' in morph.parse(full_name[1])[i].tag and 'NOUN' in morph.parse(full_name[1])[i].tag and 'sing' in morph.parse(full_name[1])[i].tag and 'nomn' in morph.parse(full_name[1])[i].tag:
+            elif 'femn' in morph.parse(full_name[1])[i].tag and 'nomn' in morph.parse(full_name[1])[i].tag:
                 gender = Gender.FEMALE
                 break
             else:
@@ -50,10 +50,10 @@ def name_change(name, case='nominative'):
         final_name = f'{cased_lastname} {cased_first_name}'
     else:
         for i in range(len(morph.parse(full_name[0]))):
-            if 'masc' in morph.parse(full_name[0])[i].tag and 'NOUN' in morph.parse(full_name[0])[i].tag and 'sing' in morph.parse(full_name[0])[i].tag and 'nomn' in morph.parse(full_name[0])[i].tag:
+            if 'masc' in morph.parse(full_name[0])[i].tag and 'nomn' in morph.parse(full_name[0])[i].tag:
                 gender = Gender.MALE
                 break
-            elif 'femn' in morph.parse(full_name[0])[i].tag and 'NOUN' in morph.parse(full_name[0])[i].tag and 'sing' in morph.parse(full_name[0])[i].tag and 'nomn' in morph.parse(full_name[0])[i].tag:
+            elif 'femn' in morph.parse(full_name[0])[i].tag and 'nomn' in morph.parse(full_name[0])[i].tag:
                 gender = Gender.FEMALE
                 break
             else:
