@@ -12,7 +12,7 @@ GENERATED_PDF
 Source
 
 ### JSON ###
-*.json
+package-lock.json
 
 ### Cash ###
 __pycache__
