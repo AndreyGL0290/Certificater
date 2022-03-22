@@ -92,11 +92,7 @@ def start(input_file_name, output_file_name, send):
     # Перебираем каждый элемент в массиве
     for loc in data:
         # file_name = PPTX_GENERATOR(loc)
-        # if file_name == 'empty':
-        #     powerpoint.Quit()
-        #     t2 = time.perf_counter()
-        #     print(f"Finished in {t2-t1} second(s)")
-        #     return
+        
         # pptx_to_pdf(file_name, loc['date'], powerpoint)
         # pptx_to_pdf(file_name[indexOf(data, loc)], powerpoint)
         pptx_to_pdf(file_name[indexOf(data, loc)], loc['date'], powerpoint)
