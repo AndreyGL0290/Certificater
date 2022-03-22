@@ -8,6 +8,12 @@
 GENERATED_PPTX
 GENERATED_PDF
 
+### source directory ###
+Source
+
+### JSON ###
+*.json
+
 ### Cash ###
 __pycache__
 
