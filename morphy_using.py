@@ -44,7 +44,17 @@ def name_change(name, case='nominative'):
                 gender = Gender.FEMALE
                 break
         
-        # Если он не понял какого пола человек
+        # Если он не понял какого пола человек смотрим фамилию
+        if gender == '':
+            for i in range(len(morph.parse(full_name[0]))):
+                if 'masc' in morph.parse(full_name[0])[i].tag and 'nomn' in morph.parse(full_name[0])[i].tag:
+                    gender = Gender.MALE
+                    break
+                elif 'femn' in morph.parse(full_name[0])[i].tag and 'nomn' in morph.parse(full_name[0])[i].tag:
+                    gender = Gender.FEMALE
+                    break
+        
+        # Если до сих пор не понял, то ставим мужской
         if gender == '':
             gender = Gender.MALE
         
