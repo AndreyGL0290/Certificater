@@ -43,8 +43,11 @@ def name_change(name, case='nominative'):
             elif 'femn' in morph.parse(full_name[1])[i].tag and 'nomn' in morph.parse(full_name[1])[i].tag:
                 gender = Gender.FEMALE
                 break
-            else:
-                gender = Gender.MALE
+        
+        # Если он не понял какого пола человек
+        if gender == '':
+            gender = Gender.MALE
+        
         cased_first_name = maker.make(NamePart.FIRSTNAME, gender, all_cases[case.lower()], full_name[1]) # Имя
         cased_lastname = maker.make(NamePart.LASTNAME, gender, all_cases[case.lower()], full_name[0]) # Фамилия
         final_name = f'{cased_lastname} {cased_first_name}'
@@ -56,8 +59,11 @@ def name_change(name, case='nominative'):
             elif 'femn' in morph.parse(full_name[0])[i].tag and 'nomn' in morph.parse(full_name[0])[i].tag:
                 gender = Gender.FEMALE
                 break
-            else:
-                gender = Gender.MALE
+        
+        # Если он не понял какого пола человек
+        if gender == '':
+            gender = Gender.MALE
+        
         cased_first_name = maker.make(NamePart.FIRSTNAME, gender, all_cases[case.lower()], full_name[0]) # Имя
         final_name = f'{cased_first_name}'
 
