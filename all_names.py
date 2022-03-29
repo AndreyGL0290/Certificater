@@ -25,13 +25,13 @@ def all_names(work_list, template):
         a = dict()
         for j in range(len(wb[i])):                
             # Это сделано чтобы указывать падеж только на одной строке, а не на каждой
-            if wb[0][j] == 'case':
-                a[wb[0][j]] = wb[1][j]
+            if wb[0][j] in ['case', 'Case', 'CASE']:
+                a[wb[0][j].lower()] = wb[1][j].lower()
             else:
                 # Если ячейка, в которой должно быть слово-заместитель пусто, то не записываем ее значение
                 if wb[0][j] == None:
                     continue
-                a[wb[0][j]] = wb[i][j]
+                a[wb[0][j].lower()] = wb[i][j].lower()
         # Если в Excel файле уже указаны шаблоны, то используем их.
         # Но если они есть в Excel, а человек ввел еще и свой, то используем тот что ввел человек.
         if "template" != a.keys():
