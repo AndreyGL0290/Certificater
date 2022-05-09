@@ -18,3 +18,5 @@ package-lock.json
 __pycache__
 
 # End of https://www.toptal.com/developers/gitignore/api/dotenv
+
+resources
