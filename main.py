@@ -14,22 +14,6 @@ path = os.getcwd()
 
 eel.init(path + "\\Web")
 
-'''
-Сделано:
-Русские символы в названии файлов
-Возможность не склонять ФИО
-Модификация склонения (по отчеству, если его нет, то morphy)
-НЕ СКЛОНЯТЬ другие текстовые поля
-При наличии не используемых полей возникает ошибка
-Не открывать и закрывать каждый раз Power Point
-Сделать поп ап с формой ввода email
-Сделать хэндлинг различных возникающих проблем
-Поправить дизайн
-
-Надо сделать:
-Сделать чтобы галка появлялась только после ввода, а кнопка "ввести почту" менялась на "обновить почту"
-'''
-
 @eel.expose
 def create_email_info(e, p):
     # Создаем или перезаписываем файл имеющейся информацией
@@ -61,7 +45,7 @@ def start(input_file_name, output_file_name, send):
             send = False
 
     data = all_names(input_file_name, output_file_name)
-
+    print(data)
     # Если Excel файл не найден
     if data == 'Excel':
         eel.raise_error('Excel файл не найден или не указан')
@@ -70,7 +54,6 @@ def start(input_file_name, output_file_name, send):
         eel.raise_error('Шаблон не найден или не указан')
         return
 
-    # Не спраашивай зачем так много, просто надо
     os.makedirs(f"GENERATED_PPTX/{data[0]['date']}", exist_ok=True)
     os.makedirs(f"GENERATED_PDF/{data[0]['date']}", exist_ok=True)
 
@@ -89,19 +72,21 @@ def start(input_file_name, output_file_name, send):
     # with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
     #     print(list(executor.map(pptx_to_pdf, [{"file_name": file_name[:ceil(len(file_name)/2):], 'powerpoint': powerpoint}, {"file_name": file_name[ceil(len(file_name)/2)::], "powerpoint": powerpoint}])))
 
+    # Устанавлиавем соединение
+    if send:
+        smtps = login()
+
     # Перебираем каждый элемент в массиве
     for loc in data:
         # file_name = PPTX_GENERATOR(loc)
-        
         # pptx_to_pdf(file_name, loc['date'], powerpoint)
         # pptx_to_pdf(file_name[indexOf(data, loc)], powerpoint)
         pptx_to_pdf(file_name[indexOf(data, loc)], loc['date'], powerpoint)
         if send:
             try:
-                smtps = login()
                 send_email(loc['email'], smtps, loc['date'], file_name)
             except SMTPAuthenticationError:
-                eel.raise_error("Не верно указан пароль от почты.\n Статья о других возможных проблемах по ссылке")
+                eel.raise_error("Не верно указана почта или пароль от почты\nЕсли все указано верно, то ваша почта не поддержиаватся") # Сделать ссылку
                 send = False
             except KeyError:
                 eel.raise_error("В Excel документе нет поля email, сертификаты не были отправлены")
