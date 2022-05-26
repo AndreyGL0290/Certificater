@@ -4,10 +4,6 @@
 ### dotenv ###
 .env
 
-### Certificates ###
-GENERATED_PPTX
-GENERATED_PDF
-
 ### source directory ###
 Source
 
@@ -24,4 +20,6 @@ logs.txt
 data_with_spaces.xlsx
 
 ### Directories ###
+GENERATED_PPTX
+GENERATED_PDF
 resources
