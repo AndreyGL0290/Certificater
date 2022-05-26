@@ -31,6 +31,22 @@ def name_change(name, case='nominative'):
             gender = Gender.MALE
         else:
             gender = Gender.FEMALE
+        
+        for i in range(len(morph.parse(full_name[1]))):
+            if {'masc', 'NOUN', 'nomn'} in morph.parse(full_name[1])[i].tag and gender == Gender.MALE:
+                if {'Name'} in morph.parse(full_name[1])[i].tag:
+                    cased_first_name = morph.parse(full_name[1])[i]
+                    cased_first_name = cased_first_name.inflect({all_cases[case][1]}).word # Имя
+                    cased_lastname = maker.make(NamePart.LASTNAME, gender, all_cases[case][0], full_name[0]) # Фамилия
+                    cased_middle_name = maker.make(NamePart.MIDDLENAME, gender, all_cases[case][0], full_name[2]) # Отчество
+                    return f'{cased_lastname} {cased_first_name.capitalize()} {cased_middle_name}'
+            elif {'femn', 'NOUN', 'nomn'} in morph.parse(full_name[1])[i].tag and gender == Gender.FEMALE:
+                if {'Name'} in morph.parse(full_name[1])[i].tag:
+                    cased_first_name = morph.parse(full_name[1])[i]
+                    cased_first_name = cased_first_name.inflect({all_cases[case][1]}).word # Имя
+                    cased_lastname = maker.make(NamePart.LASTNAME, gender, all_cases[case][0], full_name[0]) # Фамилия
+                    cased_middle_name = maker.make(NamePart.MIDDLENAME, gender, all_cases[case][0], full_name[2]) # Отчество
+                    return f'{cased_lastname} {cased_first_name.capitalize()} {cased_middle_name}'
         cased_middle_name = maker.make(NamePart.MIDDLENAME, gender, all_cases[case][0], full_name[2]) # Отчество
         cased_first_name = maker.make(NamePart.FIRSTNAME, gender, all_cases[case][0], full_name[1]) # Имя
         cased_lastname = maker.make(NamePart.LASTNAME, gender, all_cases[case][0], full_name[0]) # Фамилия
@@ -45,7 +61,6 @@ def name_change(name, case='nominative'):
                     cased_first_name = cased_first_name.inflect({all_cases[case][1]}).word # Имя
                     cased_lastname = maker.make(NamePart.LASTNAME, gender, all_cases[case][0], full_name[0]) # Фамилия
                     return f'{cased_lastname} {cased_first_name.capitalize()}'
-                break
             elif {'femn', 'NOUN', 'nomn'} in morph.parse(full_name[1])[i].tag:
                 gender = Gender.FEMALE
                 if {'Name'} in morph.parse(full_name[1])[i].tag:
@@ -54,7 +69,6 @@ def name_change(name, case='nominative'):
                     cased_first_name = cased_first_name.inflect({all_cases[case][1]}).word # Имя
                     cased_lastname = maker.make(NamePart.LASTNAME, gender, all_cases[case][0], full_name[0]) # Фамилия
                     return f'{cased_lastname} {cased_first_name.capitalize()}'
-                break
         
         # Если до сих пор не понял, то ставим мужской
         if gender == '':
@@ -71,14 +85,12 @@ def name_change(name, case='nominative'):
                     cased_first_name = morph.parse(full_name[0])[i]
                     cased_first_name = cased_first_name.inflect({all_cases[case][1]}).word
                     return f'{cased_first_name.capitalize()}'
-                break
             elif {'femn', 'NOUN', 'nomn'} in morph.parse(full_name[0])[i].tag:
                 gender = Gender.FEMALE
                 if {'Name'} in morph.parse(full_name[0])[i].tag:
                     cased_first_name = morph.parse(full_name[0])[i]
                     cased_first_name = cased_first_name.inflect({all_cases[case][1]}).word
                     return f'{cased_first_name.capitalize()}'
-                break
         
         if gender == '':
             gender = Gender.MALE
