@@ -45,7 +45,6 @@ def start(input_file_name, output_file_name, send):
             send = False
 
     data = all_names(input_file_name, output_file_name)
-    print(data)
     # Если Excel файл не найден
     if data == 'Excel':
         eel.raise_error('Excel файл не найден или не указан')
@@ -67,20 +66,13 @@ def start(input_file_name, output_file_name, send):
     with concurrent.futures.ThreadPoolExecutor() as executor:
         file_name = list(executor.map(PPTX_GENERATOR, data))
 
-    powerpoint = init_powerpoint()
-
-    # with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-    #     print(list(executor.map(pptx_to_pdf, [{"file_name": file_name[:ceil(len(file_name)/2):], 'powerpoint': powerpoint}, {"file_name": file_name[ceil(len(file_name)/2)::], "powerpoint": powerpoint}])))
-
     # Устанавлиавем соединение
     if send:
         smtps = login()
 
     # Перебираем каждый элемент в массиве
     for loc in data:
-        # file_name = PPTX_GENERATOR(loc)
-        # pptx_to_pdf(file_name, loc['date'], powerpoint)
-        # pptx_to_pdf(file_name[indexOf(data, loc)], powerpoint)
+        powerpoint = init_powerpoint()
         pptx_to_pdf(file_name[indexOf(data, loc)], loc['date'], powerpoint)
         if send:
             try:
@@ -93,8 +85,8 @@ def start(input_file_name, output_file_name, send):
                 send = False
 
     eel.raise_error("Процесс успешно завершен")
-    time2 = time.perf_counter()
     powerpoint.Quit()
+    time2 = time.perf_counter()
     print(f"Finished in {time2-time1} second(s)")
 
 if __name__ == "__main__":

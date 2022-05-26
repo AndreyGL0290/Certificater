@@ -2,6 +2,14 @@ from openpyxl import load_workbook
 import datetime
 import uuid
 
+def name_fit(name):
+    arr = name.split()
+    valid_name = ''
+    for i in range(len(arr)):
+        valid_name += arr[i]
+        if i != len(arr)-1:
+            valid_name += ' '
+    return valid_name
 
 def all_names(work_list, template):
     if work_list == '':
@@ -17,7 +25,7 @@ def all_names(work_list, template):
 
     # Для работы с Excel таблицей
     try:
-        wb = tuple(load_workbook(work_list).active.values)
+        wb = tuple(load_workbook(work_list, data_only=True).active.values)
     except FileNotFoundError:
         return "Excel"
     ans = list()
@@ -47,6 +55,7 @@ def all_names(work_list, template):
         # Если в ячейке где должно быть имя пусто, то удаляем весь объект с данными об участнике
         try:
             if a['name'] != None:
+                a['name'] = name_fit(a['name'])
                 a['file_name'] = a['name']
                 ans.append(a)
         except KeyError:

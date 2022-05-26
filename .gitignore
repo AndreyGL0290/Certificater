@@ -17,6 +17,11 @@ package-lock.json
 ### Cash ###
 __pycache__
 
-# End of https://www.toptal.com/developers/gitignore/api/dotenv
+### Logs ###
+logs.txt
 
+### Xlsx ###
+data_with_spaces.xlsx
+
+### Directories ###
 resources
