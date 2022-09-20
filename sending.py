@@ -24,7 +24,7 @@ def send_email(email, smtps, date, filename):
         payload.set_payload((attach_file).read())
         encoders.encode_base64(payload) # Расшифровывает добавленный файл
         # Добавляет нагрузке заголовок и имя файла
-        payload.add_header('Content-Disposition', 'attachment', filename=f"{filename}.pdf")
+        payload.add_header('Content-Disposition', 'attachment', filename=f"{filename}.pdf") # Прикрепляем документ
 
         try:
             message = read_template("letter.txt")
@@ -33,12 +33,12 @@ def send_email(email, smtps, date, filename):
         msg = MIMEMultipart() # Создает сообщение
 
         # Задаем параметры "От", "Кому" и "Тема"
-        msg['From'] = os.environ["MY_ADRESS"]
-        msg['To'] = email
-        msg['Subject'] = 'Сертификат участника образовательного проекта ДТ "Кванториум"'
+        msg['From'] = os.environ["MY_ADRESS"] # Email отправителя
+        msg['To'] = email # Email адресата
+        msg['Subject'] = 'Сертификат участника образовательного проекта ДТ "Кванториум"' # Тема
 
         # Добавляет текст из файла в email
-        msg.attach(MIMEText(message, 'plain'))
+        msg.attach(MIMEText(message, 'plain')) # Тело письма
         msg.attach(payload)
         # Отправляжет сообщние
         smtps.send_message(msg)
