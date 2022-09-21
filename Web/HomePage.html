@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="HomePage.css">
+    <script type="text/javascript" src="eel.js"></script>
+    <title>Certificater</title>
+</head>
+<body>
+    <div class="left-side">
+        <fieldset class="box-label">
+            <legend>Создание</legend>
+            <div class="file-system">
+                <a class="option" onclick="document.getElementById('input-file').click();">Загрузить Excel файл</a>
+                <input class="option" accept=".xlsx, .xls" id="input-file" type="file" name="input" style="display: none;" />
+                <span class="choosed-file-label">Не выбрано</span>
+            </div>
+
+            <div class="file-system">
+                <a class="option" onclick="document.getElementById('output-file').click();">Загрузить шаблон</a>
+                <input class="option" accept=".pptx, .ppt" id="output-file" type="file" name="output" style="display: none;" />
+                <span class="choosed-file-label">Не выбрано</span>
+            </div>
+
+            <div class="file-system">
+                <a class="option" id="create">Создать</a>
+            </div>
+        </fieldset>
+        <fieldset class="box-label">
+            <legend>Отправка</legend>
+            <div class="file-system">
+                <a class="option open-popup" id="email">Ввести почту</a>
+            </div>
+            <div class="file-system">
+                <a class="option" id="send-files">Отправить имеющиеся сертификаты</a>
+            </div>
+            <div class="file-system">
+                <label class="file-send"><input type="checkbox" id="send" value="1">Отправить файлы после создания?</label>
+            </div>
+        </fieldset>
+        <span class="error" id="error">Приятного пользования!</span>
+    </div>
+    <div class="right-side">
+        <video width="320" height="240" autoplay muted loop>
+            <source src="Kvantorium.mp4" type="video/mp4">
+            Ваш браузер не поддерживает видео тэг
+        </video>
+    </div>
+
+    <!-- Pop Up -->
+    <div class="popup__bg"> 
+        <form class="popup" name="email">
+            <img src="images/close.png" class="close-popup">
+            <label>
+                <input type="email" name="email">
+                <div class="label__text">
+                    Ваша почта
+                </div>
+            </label>
+            <label>
+                <input type="current-password" name="password">
+                <div class="label__text">
+                    Пароль
+                </div>
+            </label>
+            <button type="submit" id='send-email'>Подтвердить</button>
+        </form>
+    </div>  
+    <script type="text/javascript" src="script.js"></script>
+</body>
+</html>

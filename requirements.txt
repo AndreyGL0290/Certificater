@@ -1,0 +1,9 @@
+uuid
+datetime
+openpyxl
+comtypes
+eel
+python-pptx
+python-dotenv
+pytrovich
+pymorphy2

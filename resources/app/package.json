@@ -1,0 +1,26 @@
+{
+  "name": "certificater",
+  "version": "1.0.0",
+  "description": "<img src=\"https://github.com/AndreyGL0290/Certificater/blob/changes/example4.png?raw=true\" width=\"500\" />",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndreyGL0290/Certificater.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndreyGL0290/Certificater/issues"
+  },
+  "homepage": "https://github.com/AndreyGL0290/Certificater#readme",
+  "dependencies": {
+    "electron": "^17.1.2",
+    "electron-packager": "^15.4.0",
+    "python-shell": "^3.0.1"
+  }
+}
