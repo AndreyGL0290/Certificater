@@ -29,69 +29,44 @@ document.addEventListener('click', (e) => { // Вешаем обработчик
 });
 
 let emailForm = document.forms[popup.getAttribute('name')];
-let inputLabel = ''
-let outputLabel = ''
+
 input.addEventListener('change', () => {
-    if (input.files[0] === undefined) {
-        inputLabel = 'Не выбрано'
-    } else {
-        inputLabel = input.files[0].name
-    }
-    if (inputLabel.length > 20) inputLabel = inputLabel.slice(0, 19)+'...xlsx';
-    document.getElementsByClassName("choosed-file-label")[0].textContent = inputLabel;
+    document.getElementsByClassName("choosed-file-label")[0].textContent = input.files[0].name;
 });
 
 output.addEventListener('change', () => {
-    if (output.files[0] === undefined) {
-        outputLabel = 'Не выбрано'
-    } else {
-        outputLabel = output.files[0].name
-    }
-    if (outputLabel.length > 20) outputLabel = outputLabel.slice(0, 19)+'...pptx';
-    document.getElementsByClassName("choosed-file-label")[1].textContent = outputLabel;
+    document.getElementsByClassName("choosed-file-label")[1].textContent = output.files[0].name
 });
 
 // Когда нажимается кнопка "Отправить после сохранения" ее значение меняется
-let value = 0;
+let value = false;
 checkbox.addEventListener('click', () => {
-    if (!value) value = 1;
-    else value = 0;
+    if (!value) value = true;
+    else value = false;
 });
 
-// Запускаем главный алгоритм
-const sendToPython = (args) => {
-    window.api.start(args)
-};
-
-// Обновляем почту пользователя
-const updateEmail = (args) => {
-    window.api.updateEmail(args)
-};
-
-// Добавляем ошибку, пришедшую с бэка, на главную страницу
-window.api.onResponse((message) => {
-    document.getElementById('error').textContent = message;
-})
-
-
-btn = document.getElementById('create');
-
-btn.addEventListener('click', () => {
+create.addEventListener("click", () => {
     try {
-        if (output.files[0] === undefined){
-            sendToPython([input.files[0].path, '', value]);
+        if (output.files[0] == undefined){
+            eel.start(input.files[0].name, '', value);
         } else {
-            sendToPython([input.files[0].path, output.files[0].path, value]);
+            eel.start(input.files[0].name, output.files[0].name, value);
         }
     } catch (error) {
         if (error instanceof TypeError) document.getElementById('error').textContent = "Выберите файлы";
-        else document.getElementById('error').textContent = "Что то пошло не так..."; console.log(error);
+        else document.getElementById('error').textContent = "Что то пошло не так...";
     }
+
 });
 
 document.getElementById('send-email').addEventListener('click', () => {
     let email = emailForm.elements["email"].value;
     let password = emailForm.elements["password"].value;
-    // console.log(email, password);
-    updateEmail([email, password]);
-});
+    console.log(email, password);
+    eel.create_email_info(email, password) // Оба из формы
+})
+
+eel.expose(raise_error);
+function raise_error(error) {
+    document.getElementById('error').textContent = error;
+}

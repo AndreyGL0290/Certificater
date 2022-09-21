@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="HomePage.css">
+    <script type="text/javascript" src="eel.js"></script>
     <title>Certificater</title>
 </head>
 <body>
@@ -13,7 +14,7 @@
             <legend>Создание</legend>
             <div class="file-system">
                 <a class="option" onclick="document.getElementById('input-file').click();">Загрузить Excel файл</a>
-                <input class="option" accept=".xlsx" id="input-file" type="file" name="input" style="display: none;" />
+                <input class="option" accept=".xlsx, .xls" id="input-file" type="file" name="input" style="display: none;" />
                 <span class="choosed-file-label">Не выбрано</span>
             </div>
 
@@ -33,7 +34,7 @@
                 <a class="option open-popup" id="email">Ввести почту</a>
             </div>
             <div class="file-system">
-                <a class="option" id="send-files" style="display:none">Отправить имеющиеся сертификаты</a>
+                <a class="option" id="send-files">Отправить имеющиеся сертификаты</a>
             </div>
             <div class="file-system">
                 <label class="file-send"><input type="checkbox" id="send" value="1">Отправить файлы после создания?</label>
@@ -42,7 +43,10 @@
         <span class="error" id="error">Приятного пользования!</span>
     </div>
     <div class="right-side">
-        <img src="NETI.png" alt="NETI`s logo" height="119" width="400"></img>
+        <video width="320" height="240" autoplay muted loop>
+            <source src="Kvantorium.mp4" type="video/mp4">
+            Ваш браузер не поддерживает видео тэг
+        </video>
     </div>
 
     <!-- Pop Up -->
