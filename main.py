@@ -3,6 +3,7 @@ import os
 import shutil
 import subprocess
 import eel
+import sys
 import time
 from smtplib import SMTPAuthenticationError
 import concurrent.futures
@@ -15,7 +16,6 @@ path = os.getcwd()
 
 eel.init(path + "\\Web")
 
-@eel.expose
 def create_email_info(e, p):
     # Создаем или перезаписываем файл имеющейся информацией
     with open(".env", 'w') as env:
@@ -29,7 +29,6 @@ def init_powerpoint():
     powerpoint.Visible = 1
     return powerpoint
 
-@eel.expose
 def start(input_file_name, output_file_name, send):    
     time1 = time.perf_counter()
 
@@ -100,4 +99,5 @@ def start(input_file_name, output_file_name, send):
     print(f"Finished in {time2-time1} second(s)")
 
 if __name__ == "__main__":
-    eel.start("HomePage.html", geometry={"size": (600, 400), "position": (400, 600)}, port=8002)
+    start(sys.argv[0], sys.argv[1], sys.argv[2])
+    # eel.start("HomePage.html", geometry={"size": (600, 400), "position": (400, 600)}, port=8002)
