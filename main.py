@@ -1,6 +1,7 @@
 from operator import indexOf
 import os
 import shutil
+import subprocess
 import eel
 import time
 from smtplib import SMTPAuthenticationError
@@ -32,7 +33,7 @@ def init_powerpoint():
 def start(input_file_name, output_file_name, send):    
     time1 = time.perf_counter()
 
-    from PPTX_to_PDF import pptx_to_pdf
+    # from PPTX_to_PDF import pptx_to_pdf
     from sending import login, send_email
     from all_names import all_names
     from PPTX_GENERATOR import PPTX_GENERATOR
@@ -70,22 +71,31 @@ def start(input_file_name, output_file_name, send):
     if send:
         smtps = login()
 
-    # Перебираем каждый элемент в массиве
+    # Starting bash script with libreoffice
+    process = subprocess.Popen(['libreoffice.sh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    returncode = process.wait()
+    print(returncode)
+
+    # Перебираем каждый элемент в массиве and trying sending them
     for loc in data:
-        powerpoint = init_powerpoint()
-        pptx_to_pdf(file_name[indexOf(data, loc)], loc['date'], powerpoint)
-        if send:
-            try:
-                send_email(loc['email'], smtps, loc['date'], file_name)
-            except SMTPAuthenticationError:
-                eel.raise_error("Не верно указана почта или пароль от почты\nЕсли все указано верно, то ваша почта не поддержиаватся") # Сделать ссылку
-                send = False
-            except KeyError:
-                eel.raise_error("В Excel документе нет поля email, сертификаты не были отправлены")
-                send = False
+        # powerpoint = init_powerpoint()
+        # pptx_to_pdf(file_name[indexOf(data, loc)], loc['date'], powerpoint)
+        
+        if not send:
+            continue
+            
+        try:
+            send_email(loc['email'], smtps, loc['date'], file_name)
+        except SMTPAuthenticationError:
+            eel.raise_error("Не верно указана почта или пароль от почты\nЕсли все указано верно, то ваша почта не поддержиаватся") # Сделать ссылку
+            send = False
+        except KeyError:
+            eel.raise_error("В Excel документе нет поля email, сертификаты не были отправлены")
+            send = False
 
     eel.raise_error("Процесс успешно завершен")
-    powerpoint.Quit()
+    # powerpoint.Quit()
+    
     time2 = time.perf_counter()
     print(f"Finished in {time2-time1} second(s)")
 
