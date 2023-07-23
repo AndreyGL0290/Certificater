@@ -72,7 +72,8 @@ def start(input_file_name, output_file_name, send=False):
         file_name = list(executor.map(PPTX_GENERATOR, data))
 
     # Starting bash script with libreoffice
-    process = subprocess.Popen(['libreoffice.sh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    print(os.path.exists('./convert.sh'))
+    process = subprocess.Popen(['./convert.sh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return_code = process.wait()
     print(return_code)
 
