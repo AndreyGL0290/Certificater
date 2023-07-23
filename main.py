@@ -84,9 +84,9 @@ def start(input_file_name, output_file_name, send):
                 eel.raise_error("В Excel документе нет поля email, сертификаты не были отправлены")
                 send = False
 
-    eel.raise_error("Процесс успешно завершен")
     powerpoint.Quit()
     time2 = time.perf_counter()
+    eel.raise_error(f"Процесс успешно завершен za {time2-time1}")
     print(f"Finished in {time2-time1} second(s)")
 
 if __name__ == "__main__":
