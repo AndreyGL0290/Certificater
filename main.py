@@ -101,5 +101,5 @@ def start(input_file_name, output_file_name, send=False):
 
 if __name__ == "__main__":
     print(sys.argv)
-    start(sys.argv[0], sys.argv[1], sys.argv[2])
+    start(sys.argv[1], sys.argv[2], sys.argv[3])
     # eel.start("HomePage.html", geometry={"size": (600, 400), "position": (400, 600)}, port=8002)
