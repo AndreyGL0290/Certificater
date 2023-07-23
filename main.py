@@ -7,7 +7,7 @@ import sys
 import time
 from smtplib import SMTPAuthenticationError
 import concurrent.futures
-from comtypes.client import CreateObject
+# from comtypes.client import CreateObject
 from dotenv import load_dotenv
 
 # from PPTX_to_PDF import pptx_to_pdf
@@ -29,11 +29,11 @@ eel.init(path + "\\Web")
 #         env.write(f"MY_PASSWORD = {p}\n")
 #     load_dotenv()
 
-def init_powerpoint():
-    powerpoint = CreateObject('PowerPoint.Application')
-    powerpoint.UserControl = 0
-    powerpoint.Visible = 1
-    return powerpoint
+# def init_powerpoint():
+#     powerpoint = CreateObject('PowerPoint.Application')
+#     powerpoint.UserControl = 0
+#     powerpoint.Visible = 1
+#     return powerpoint
 
 def start(input_file_name, output_file_name, send=False):    
     time1 = time.perf_counter()
