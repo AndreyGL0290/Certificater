@@ -9,19 +9,25 @@ from smtplib import SMTPAuthenticationError
 import concurrent.futures
 from comtypes.client import CreateObject
 from dotenv import load_dotenv
-# Загружаем секретные переменные
+
+# from PPTX_to_PDF import pptx_to_pdf
+from sending import login, send_email
+from all_names import all_names
+from PPTX_GENERATOR import PPTX_GENERATOR
+
+# Loading Secret Variables
 load_dotenv()
 
 path = os.getcwd()
 
 eel.init(path + "\\Web")
 
-def create_email_info(e, p):
-    # Создаем или перезаписываем файл имеющейся информацией
-    with open(".env", 'w') as env:
-        env.write(f"MY_ADRESS = {e}\n")
-        env.write(f"MY_PASSWORD = {p}\n")
-    load_dotenv()
+# def create_email_info(e, p):
+#     # Creating or rewriting file with information given in gui
+#     with open(".env", 'w') as env:
+#         env.write(f"MY_ADRESS = {e}\n")
+#         env.write(f"MY_PASSWORD = {p}\n")
+#     load_dotenv()
 
 def init_powerpoint():
     powerpoint = CreateObject('PowerPoint.Application')
@@ -29,29 +35,23 @@ def init_powerpoint():
     powerpoint.Visible = 1
     return powerpoint
 
-def start(input_file_name, output_file_name, send):    
+def start(input_file_name, output_file_name, send=False):    
     time1 = time.perf_counter()
-
-    # from PPTX_to_PDF import pptx_to_pdf
-    from sending import login, send_email
-    from all_names import all_names
-    from PPTX_GENERATOR import PPTX_GENERATOR
 
     if send:
         try:
-            os.environ["MY_ADRESS"]
+            os.environ["MY_ADDRESS"]
         except KeyError:
             eel.raise_error("Почтовые данные не найдены, но сертификаты созданы")
             send = False
 
     data = all_names(input_file_name, output_file_name)
-    # Если Excel файл не найден
+    # if Excel file wasn't found
     if data == 'Excel':
-        eel.raise_error('Excel файл не найден или не указан')
-        return
+        raise 'Excel file wasn\'t found'
+    # if Powerpoint file wasn't found
     elif data == 'Template':
-        eel.raise_error('Шаблон не найден или не указан')
-        return
+        raise 'Template file wasn\'t found'
 
     os.makedirs(f"GENERATED_PPTX/{data[0]['date']}", exist_ok=True)
     os.makedirs(f"GENERATED_PDF/{data[0]['date']}", exist_ok=True)
@@ -62,20 +62,20 @@ def start(input_file_name, output_file_name, send):
     os.makedirs(f"GENERATED_PPTX/{data[0]['date']}", exist_ok=True)
     os.makedirs(f"GENERATED_PDF/{data[0]['date']}", exist_ok=True)
 
-    # Запускаем асинхронное редактирование pptx
+    # Starting asynchronous pptx rewriting
     with concurrent.futures.ThreadPoolExecutor() as executor:
         file_name = list(executor.map(PPTX_GENERATOR, data))
 
-    # Устанавлиавем соединение
+    # Establishing smtps connection
     if send:
         smtps = login()
 
     # Starting bash script with libreoffice
     process = subprocess.Popen(['libreoffice.sh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    returncode = process.wait()
-    print(returncode)
+    return_code = process.wait()
+    print(return_code)
 
-    # Перебираем каждый элемент в массиве and trying sending them
+    # Iterating through every element of 'data' array and trying to send them
     for loc in data:
         # powerpoint = init_powerpoint()
         # pptx_to_pdf(file_name[indexOf(data, loc)], loc['date'], powerpoint)
@@ -86,13 +86,13 @@ def start(input_file_name, output_file_name, send):
         try:
             send_email(loc['email'], smtps, loc['date'], file_name)
         except SMTPAuthenticationError:
-            eel.raise_error("Не верно указана почта или пароль от почты\nЕсли все указано верно, то ваша почта не поддержиаватся") # Сделать ссылку
             send = False
+            print('Email or password missmatch\nIf everything is correct your email is not supported') # Create a link
         except KeyError:
-            eel.raise_error("В Excel документе нет поля email, сертификаты не были отправлены")
             send = False
+            print('No email field in Excel document, certificates weren\'t sent')
 
-    eel.raise_error("Процесс успешно завершен")
+    print('Process was successfully completed')
     # powerpoint.Quit()
     
     time2 = time.perf_counter()
