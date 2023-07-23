@@ -41,8 +41,13 @@ def start(input_file_name, output_file_name, send=False):
     if send:
         try:
             os.environ["MY_ADDRESS"]
+
+            # Establishing smtps connection
+            smtps = login()
         except KeyError:
-            eel.raise_error("Почтовые данные не найдены, но сертификаты созданы")
+            send = False
+            print('Email data wasn\'t found, but certificates were created')
+        except:
             send = False
 
     data = all_names(input_file_name, output_file_name)
@@ -65,10 +70,6 @@ def start(input_file_name, output_file_name, send=False):
     # Starting asynchronous pptx rewriting
     with concurrent.futures.ThreadPoolExecutor() as executor:
         file_name = list(executor.map(PPTX_GENERATOR, data))
-
-    # Establishing smtps connection
-    if send:
-        smtps = login()
 
     # Starting bash script with libreoffice
     process = subprocess.Popen(['libreoffice.sh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
