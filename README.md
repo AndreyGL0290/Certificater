@@ -1,6 +1,6 @@
 # Certificater
 
-<img src="https://github.com/AndreyGL0290/Certificater/blob/changes/example4.png?raw=true" width="500" />
+<img src="https://github.com/AndreyGL0290/Certificater/blob/main/example4.png?raw=true" width="500" />
 
 # How to use
 Download this project, add template and fill table. 
